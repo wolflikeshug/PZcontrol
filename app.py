@@ -9,7 +9,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/index')
-def index():
+def index2():
     return render_template('index.html')
 
 @app.route('/start_service')

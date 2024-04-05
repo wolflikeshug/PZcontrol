@@ -46,7 +46,7 @@ def is_process_running():
     
 def read_log_file():
     try:
-        file_list = glob.glob('/tmp/pz/*log*')
+        file_list = glob.glob('/tmp/pz/*log')
 
         # 检查是否有匹配的文件
         if file_list:

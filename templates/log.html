@@ -8,7 +8,7 @@
             fetch('/get_log')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('log').innerText = data.message;
+                    document.getElementById('log').innerText = data.log;
                 })
                 .catch(error => console.error('Error:', error));
         }
