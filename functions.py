@@ -44,20 +44,24 @@ def is_process_running():
     except subprocess.CalledProcessError:
         return False
     
+import glob
+
 def read_log_file():
     try:
         file_list = glob.glob('/tmp/pz/*log')
 
         # 检查是否有匹配的文件
         if file_list:
-            # 假设只有一个匹配的文件，直接取第一个
+            # 假设只有一个匹配的文件，直接取最新的一个
             file_path = file_list[-1]
             
-            # 打开文件并读取内容
+            # 打开文件并读取最后100行内容
             with open(file_path, 'r') as file:
-                content = file.read()
+                lines = file.readlines()  # 读取所有行
+                last_100_lines = lines[-100:]  # 获取最后100行
                 
-            # 处理文件内容，这里只是简单地打印内容
+            # 将最后100行内容合并为单一字符串返回
+            content = ''.join(last_100_lines)
             return content
         else:
             return "未找到匹配的文件。"
