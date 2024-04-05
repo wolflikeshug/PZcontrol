@@ -51,7 +51,7 @@ def read_log_file():
         # 检查是否有匹配的文件
         if file_list:
             # 假设只有一个匹配的文件，直接取第一个
-            file_path = file_list[0]
+            file_path = file_list[-1]
             
             # 打开文件并读取内容
             with open(file_path, 'r') as file:
