@@ -2,11 +2,26 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>功能页面</title>
+    <title>服务器记录</title>
+    <script>
+        function fetchlog() {
+            fetch('/get_log')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('log').innerText = data.message;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 在页面加载完成后开始定期检查服务器状态
+        document.addEventListener('DOMContentLoaded', (event) => {
+            setInterval(fetchlog, 500); // 每秒检查一次服务器状态
+        });
+    </script>
 </head>
 <body>
-    <h1>功能页面</h1>
-    <p>这里可以添加一些特定的功能。</p>
+    <h1>服务器记录</h1>
     <button onclick="window.location.href=''">返回首页</button>
+    <p id="log">服务器记录检查中...</p>
 </body>
 </html>
