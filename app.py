@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, jsonify
 from functions import *
 
 app = Flask(__name__)
@@ -16,23 +16,27 @@ def feature():
 @app.route('/start_service')
 def start_service():
     if is_process_running():
-        return "服务器已经在运行！"
+        return jsonify({"message": "服务器已经在运行！"})
     else:
-        return start_service_with_nohup()
+        result = start_service_with_nohup()
+        return jsonify({"message": result})
 
 @app.route('/stop_service')
 def stop_service():
     if is_process_running():
-        return stop_service_with_pid()
+        result = stop_service_with_pid()
+        return jsonify({"message": result})
     else:    
-        return "服务器已经停止！"
+        return jsonify({"message": "服务器已经停止！"})
 
 @app.route('/restart_service')
 def commando():
     if is_process_running():
-        return restart_service()
+        result = restart_service()
+        return jsonify({"message": result})
     else:
-        return start_service_with_nohup()
+        result = start_service_with_nohup()
+        return jsonify({"message": result})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=1145, debug=True)

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <script>
-        // 定义commando函数
-        function commando() {
-            // 假设函数执行成功
-            alert("执行成功！");
-            // 可以在这里添加更多逻辑
+        function fetchCommando() {
+            fetch('/commando')
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </head>
