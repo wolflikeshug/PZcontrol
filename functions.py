@@ -3,7 +3,7 @@ import os
 
 from datetime import datetime, timedelta, timezone
 
-service_path = "/home/ubuntu/pz/service.sh"
+service_path = "/home/ubuntu/Steam/steamapps/common/Project\ Zomboid\ Dedicated\ Server/start-server.sh"
 log_path = "/home/ubuntu/ProjectZomboid_logs/"
 
 def start_service_with_nohup():
@@ -17,7 +17,7 @@ def start_service_with_nohup():
         log_file_name = f"service_{current_time_str}.log"
         
         # 构建包含时间戳的日志文件名的命令
-        command = f"mv /tmp/pz/*.log {log_path}; rm /tmp/pz/service.pid; nohup {service_path} > /tmp/pz/{log_file_name} 2>&1 & echo $!"
+        command = f"mv /tmp/pz/*.log {log_path}; rm /tmp/pz/service.pid; nohup {service_path} -servername ponyland > /tmp/pz/{log_file_name} 2>&1 & echo $!"
         
         # 执行命令，使用shell=True
         process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
