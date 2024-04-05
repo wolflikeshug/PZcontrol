@@ -4,7 +4,7 @@ import glob
 
 from datetime import datetime, timedelta, timezone
 
-service_path = "start-server.sh"# -servername ponyland "
+service_path = "/home/ubuntu/Steam/steamapps/common/Project\ Zomboid\ Dedicated\ Server/start-server.sh"# -servername ponyland "
 log_path = "/home/ubuntu/ProjectZomboid_logs/"
 
 def start_service_with_nohup():
