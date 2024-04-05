@@ -8,11 +8,6 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# 功能页面路由
-@app.route('/feature')
-def feature():
-    return render_template('feature.html')
-
 @app.route('/start_service')
 def start_service():
     if is_process_running():
@@ -37,6 +32,21 @@ def commando():
     else:
         result = start_service_with_nohup()
         return jsonify({"message": result})
+
+@app.route('/status')
+def status():
+    if is_process_running():
+        return jsonify({"message": "服务器运行中"})
+    else:
+        return jsonify({"message": "服务器已关闭"})
+
+@app.route('/log')
+def log():
+    return render_template('log.html')
+
+@app.route('/get_log')
+def get_log():
+    return jsonify({"log": read_log_file()})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=1145, debug=True)

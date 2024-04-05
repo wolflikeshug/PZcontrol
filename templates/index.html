@@ -4,20 +4,53 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <script>
-        function fetchCommando() {
-            fetch('/commando')
+        function startService() {
+            fetch('/start_service')
                 .then(response => response.json())
                 .then(data => alert(data.message))
                 .catch(error => console.error('Error:', error));
         }
-    </script>
+    
+        function stopService() {
+            fetch('/stop_service')
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+    
+        function restartService() {
+            fetch('/restart_service')
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        }
+    
+        function viewLogs() {
+            window.location.href='/log';
+        }
+
+        function fetchServerStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('serverStatus').innerText = data.message;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 在页面加载完成后开始定期检查服务器状态
+        document.addEventListener('DOMContentLoaded', (event) => {
+            setInterval(fetchServerStatus, 1000); // 每5秒检查一次服务器状态
+        });
+    </script>    
 </head>
 <body>
     <h1>僵尸毁灭工程管理器</h1>
-    <p>这是一个简单的Web应用示例。</p>
-    <button onclick="commando()">重启服务器</button>
-    <button onclick="commando()">启动服务器</button>
-    <button onclick="commando()">关闭服务器</button>
-    <button onclick="window.location.href='feature'">跳转到功能页面</button>
+    <p id="serverStatus">服务器状态检查中...</p>
+
+    <button onclick="startService()">启动服务器</button>
+    <button onclick="stopService()">关闭服务器</button>
+    <button onclick="restartService()">重启服务器</button>
+    <button onclick="viewLogs()">查看运行记录</button>    
 </body>
 </html>
