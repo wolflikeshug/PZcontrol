@@ -1,5 +1,6 @@
 import subprocess
 import os
+import glob
 
 from datetime import datetime, timedelta, timezone
 
@@ -20,46 +21,45 @@ def start_service_with_nohup():
         command = f"mv /tmp/pz/*.log {log_path}; rm /tmp/pz/service.pid; nohup {service_path} -servername ponyland > /tmp/pz/{log_file_name} 2>&1 & echo $!"
         
         # 执行命令，使用shell=True
-        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-        
-        # 读取输出（即后台进程的PID）
-        pid = process.stdout.readline().strip()
-        with open("/tmp/pz/service.pid", "w+") as pid_file:
-            pid_file.write(pid)
+        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         return 0
     except Exception as e:
         return str(e)
 
 def stop_service_with_pid():
-    try:
-        with open("/tmp/pz/service.pid", "r") as pid_file:
-            pid = pid_file.read().strip()
-            command = f"kill -9 {pid}"
-            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-            return 0
-    except Exception as e:
-        return str(e)
+    """Stop the ProjectZomboid64 service."""
+    os.system("pkill -f ProjectZomboid64")
+    return "服务已停止。"
 
 def restart_service():
     stop_service_with_pid()
     return start_service_with_nohup()
 
 def is_process_running():
+    """Check if ProjectZomboid64 is running."""
     try:
-        with open("/tmp/pz/service.pid", "r") as pid_file:
-            pid = pid_file.read().strip()
-            # os.kill在这里不会真的杀掉进程；它只是发送一个无害的信号来检查进程是否存在
-            os.kill(pid, 0)
-    except OSError:
-        # 如果进程不存在，将抛出OSError异常
+        # This command counts the number of instances of ProjectZomboid64 running
+        output = subprocess.check_output(["pgrep", "-f", "ProjectZomboid64"]).decode().strip()
+        return bool(output)  # True if output is not empty, meaning the process is running
+    except subprocess.CalledProcessError:
         return False
-    else:
-        # 如果没有异常，说明进程存在
-        return True
     
 def read_log_file():
     try:
-        with open("/tmp/pz/service.log", "r") as log_file:
-            return log_file.read()
+        file_list = glob.glob('/tmp/pz/*log*')
+
+        # 检查是否有匹配的文件
+        if file_list:
+            # 假设只有一个匹配的文件，直接取第一个
+            file_path = file_list[0]
+            
+            # 打开文件并读取内容
+            with open(file_path, 'r') as file:
+                content = file.read()
+                
+            # 处理文件内容，这里只是简单地打印内容
+            return content
+        else:
+            return "未找到匹配的文件。"
     except Exception as e:
         return str(e)
