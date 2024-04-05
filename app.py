@@ -8,6 +8,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
 @app.route('/start_service')
 def start_service():
     if is_process_running():
