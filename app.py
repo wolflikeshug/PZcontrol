@@ -35,4 +35,4 @@ def commando():
         return start_service_with_nohup()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=1145, debug=True)
